@@ -1,9 +1,10 @@
 #01_variables
-#Use sensible descriptive variables
-#Variables are always lowercase
-#Constant names are uppercase
-#Variable names can have a mix of numbers, letters and underscores as long as the first one is a letter.
-#Constants do not change but variables do.
+#Use sensible, descriptive variable names
+#Variable names in Python are always lowercase
+#Constant names are UPPERCASE
+#Variables can include a mix of letters,
+#underscores and numbers 
+#(as long as the first character is not a number)
 
-v4ri4bles = "Pizza"
-CONSTANT = "I am hungry"
+v4ar14b12 = "Weird Variable"
+CONSTANT = "I love Computer Science"
