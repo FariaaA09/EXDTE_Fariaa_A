@@ -5,38 +5,29 @@ from adafruit_debouncer import Debouncer
 
 # Setup button on GP15
 print("button")
-button_io = digitalio.DigitalInOut(board.GP15)
-button_io.direction = digitalio.Direction.INPUT
-button_io.pull = digitalio.Pull.UP
-button = Debouncer(button_io)
+my_button = digitalio.DigitalInOut(board.GP9)
+my_button.direction = digitalio.Direction.INPUT
+my_button.pull = digitalio.Pull.UP
+button = Debouncer(my_button)
+
 print("led")
 # Setup LEDs
-led1 = digitalio.DigitalInOut(board.GP1)
-led1.direction = digitalio.Direction.OUTPUT
+redled = digitalio.DigitalInOut(board.GP13)
+redled.direction = digitalio.Direction.OUTPUT
 
-led2 = digitalio.DigitalInOut(board.GP3)
-led2.direction = digitalio.Direction.OUTPUT
-
-print("Running...")
+blueled = digitalio.DigitalInOut(board.GP14)
+blueled.direction = digitalio.Direction.OUTPUT
 
 while True:
     button.update()
 
-    if button.fell:
-        print("Button pressed")
-        led1.value = True
-        led2.value = False
-    elif button.rose:
-        print("Button released")
-        led1.value = False
-        led2.value = True
-    elif not button.value:  # Held down
-        print("Button held")
-        led1.value = True
-        led2.value = True
-    else:  # Idle
-        print("Button idle")
-        led1.value = False
-        led2.value = False
+    if button.value is True:
+        print("not pressed")
+        redled.value = False
+        blueled.value = False
+    if button.value is False:
+        print("pressed")
+        redled.value = True
+        blueled.value = True
 
-    time.sleep(0.1)
+    time.sleep(0.1)  # Shorter delay for better responsiveness
