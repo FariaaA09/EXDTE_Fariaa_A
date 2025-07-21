@@ -13,6 +13,8 @@ button = Debouncer(my_button)
 # Setup blue LED on GP14
 blueled = digitalio.DigitalInOut(board.GP14)
 blueled.direction = digitalio.Direction.OUTPUT
+#So it dosent keep looping I added this
+print("Press the button to start the game.")
 
 while True:
     # Put BlueLed on Standby Mode
@@ -55,3 +57,12 @@ while True:
             time.sleep(1)
             break
         time.sleep(0.001)
+
+# Wait for user to press the button again to start the next round if they want
+    print("Press the button if you want to play again")
+    while True:
+        button.update()
+        if button.fell:
+#Breaking the loop
+            break
+        time.sleep(0.01)
