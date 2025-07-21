@@ -1,33 +1,57 @@
 import board
 import digitalio
 import time
+import random
 from adafruit_debouncer import Debouncer
 
-# Setup button on GP15
-print("button")
+# Setup button on GP9
 my_button = digitalio.DigitalInOut(board.GP9)
 my_button.direction = digitalio.Direction.INPUT
 my_button.pull = digitalio.Pull.UP
 button = Debouncer(my_button)
 
-print("led")
-# Setup LEDs
-redled = digitalio.DigitalInOut(board.GP13)
-redled.direction = digitalio.Direction.OUTPUT
-
+# Setup blue LED on GP14
 blueled = digitalio.DigitalInOut(board.GP14)
 blueled.direction = digitalio.Direction.OUTPUT
 
 while True:
-    button.update()
+    # Put BlueLed on Standby Mode
+    print("Waiting for press Blue LED on")
+    blueled.value = True
 
-    if button.value is True:
-        print("not pressed")
-        redled.value = False
-        blueled.value = False
-    if button.value is False:
-        print("pressed")
-        redled.value = True
-        blueled.value = True
+# Wait for button to be pressed and released
+# The user will press a button that will utilise debounce code
+    while True:
+        button.update()
+        if button.fell:
+            print("Button Pressed, Waiting to be released")
+# The LED will turn off once they release the button
+        if button.rose:
+            print("Button released")
+            blueled.value = False
+            break
+        time.sleep(0.01)
 
-    time.sleep(0.1)  # Shorter delay for better responsiveness
+# Wait for a random delay between 2 and 5
+    delay = random.uniform(2, 5)
+    time.sleep(delay)
+
+# Turn on LED and start timer for reaction time
+# After an amount of time the LED will turn back on
+    blueled.value = True
+    start_time = time.monotonic()
+# Once the LED comes on the user needs to press the button again as quickly as possible
+    print("Press the button")
+
+# Wait for user to press button again
+    while True:
+        button.update()
+        if button.fell:
+            reaction_time = time.monotonic() - start_time
+# Print The users Reaction time
+# It should print their time to the console
+            print(f"Reaction time: {reaction_time:.3f} seconds")
+            blueled.value = False
+            time.sleep(1)
+            break
+        time.sleep(0.001)
